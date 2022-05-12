@@ -1,0 +1,3 @@
+addi $s0,$s1,17
+lw $t0,0($t0)
+mult $t0,$s4
