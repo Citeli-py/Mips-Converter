@@ -7,14 +7,14 @@ def bin_to_hex(code):
         hex_code+=h[b.index(bits)]
     return hex_code
 
-def a2(bits): # Erro 4->1111 1111 1111 101, deveria ser 4->111 1111 1111 1100
+def a2(bits):
     bits_a2='0'
     for bit in bits:
         if bit=='0':
             bits_a2 += '1'
         else:
             bits_a2 += '0'
-    bits = '' #0 1111 1111 1111 1011
+    bits = '' 
     if bits_a2[-1] == '0':
         return bits_a2[1:-1]+'1'
     else:
@@ -79,30 +79,33 @@ def code_reg(reg):
     return bin_list(regs.index(reg))
 
 def code_inst(func):
-    inst = ['add', 'addi', 'lw', 'mult']
+    inst = ['add', 'addi', 'lw', 'mult', 'div', 'sw', 'sub']
     binary=['0000 00ss ssst tttt dddd d000 0010 0000',
             '0010 00ss ssst tttt iiii iiii iiii iiii',
             '1000 11ss ssst tttt iiii iiii iiii iiii',
-            '0000 00ss ssst tttt 0000 0000 0001 1000']
+            '0000 00ss ssst tttt 0000 0000 0001 1000', 
+	    '0000 00ss ssst tttt 0000 0000 0001 1010', 
+	    '1010 11ss ssst tttt iiii iiii iiii iiii', 
+	    '0000 00ss ssst tttt dddd d000 0010 0010']
     return binary[inst.index(func)]
 
 def code_order(func):
-    inst = ['add', 'addi', 'lw', 'mult']
-    order = ['dst', 'tsi', 'tis', 'st']
+    inst = ['add', 'addi', 'lw', 'mult', 'div', 'sw', 'sub']
+    order = ['dst', 'tsi', 'tis', 'st', 'st', 'tis', 'dst']
     return order[inst.index(func)]
 
 def split_cmd(cmd):
+    offset_cmd = ['lw', 'sw']
     aux = cmd.split(' ')
     inst = aux[0]
     regs = aux[1].split(',')
 
-    if inst == 'lw':
+    if inst in offset_cmd:
         aux = regs[1].split('(')
         regs[1] = aux[0]
         regs.append(aux[1].replace(')',''))
 
     return inst, regs
-
 '''
 add $d, $s, $t      dst
 addi $t, $s, imm    tsi
