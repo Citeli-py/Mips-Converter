@@ -1,3 +1,7 @@
-addi $s0,$s1,17
-lw $t0,0($t0)
-mult $t0,$s4
+lw $a0,4097($t1)
+sw $ra,18($sp)
+lw $ra,8($sp)
+add $s1,$s1,$s1
+addi $t1,$t2,3
+sw $ra,0($sp)
+add $t1,$t2,$t3
